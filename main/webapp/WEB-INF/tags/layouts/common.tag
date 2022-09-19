@@ -1,36 +1,39 @@
 <%@ tag description="공통 레이아웃" pageEncoding="UTF-8" %>
+<%@ tag body-content="scriptless" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ attribute name="header" fragment="true" %>
 <%@ attribute name="footer" fragment="true" %>
-<%@ attribute name="main_menu"  fragment="true" %>
-<%@ attribute name="title" type="java.lang.String" rtexprvalue="false" %>
-<fmt:setBundle basename="bundle.common" />
-<!DOCTYPE html> 
+<%@ attribute name="menu" fragment="true" %>
+<%@ attribute name="title" type="java.lang.String" %>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8"  />
-		<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
-		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
-		<link rel="stylesheet" type="text/css" href="<c:url value='/static/css/style.css' />" />
-		<script src="<c:url  value='/static/js/common.js' />"></script>
-		<c:if test="${empty title}">
-			<title><fmt:message key="SITE_TITLE" /></title>
-		</c:if>
-		<c:if test="${!empty title}">
-			<title>${title}</title>
-		</c:if>
-	</head>
-	<body>
-		<header>
-			<jsp:invoke fragment="header" />
-		</header>
-		<jsp:invoke fragment="main_menu" />
-		<main>
-			<jsp:doBody />
-		</main>
-		<footer>
-			<jsp:invoke fragment="footer" />
-		</footer>
-	</body>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"  />" />
+	<c:if test="${!empty addCss}">
+	<c:forEach var="css" items="${addCss}">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/" />${css}.css" />
+	</c:forEach>
+	</c:if>
+	<script src="<c:url value="/static/js/layer.js" />"></script>
+	<script src="<c:url value="/static/js/common.js" />"></script>
+	<c:if test="${!empty addJs}">
+	<c:forEach var="js" items="${addJs}">
+		<script src="<c:url value="/static/js/" />${js}.js"></script>
+	</c:forEach>
+	</c:if>
+	<title>${empty title ? "게시판" : title}</title>
+</head>
+<body>
+	<jsp:invoke fragment="header" /> 
+	
+	<jsp:invoke fragment="menu" />
+	
+	<jsp:doBody />
+	
+	<jsp:invoke fragment="footer" />
+</body>
+<iframe name="ifrmProcess" width="100%" height="0" class="dn"></iframe>
 </html>
