@@ -32,9 +32,9 @@
 				</c:forEach>	
 				</ul>
 			</section>
-			<div id="attendance">
-			<button type="button" onclick="">출석체크</button>
-			</div>
+	<div style="text-align: center;">
+	<button type="submit" style="display: inline-block; width:20%; height:5%; font-size:20px">출석체크!</button>
+	</div>
 	</body>
 </html>
 </layout:main>
