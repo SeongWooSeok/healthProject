@@ -14,17 +14,17 @@
 	${exception.message}
 	</c:if>
 	<c:if test="${empty exception}">
-		<c:chosse>
+		<c:choose>
 			<c:when test="${status == 404 }">
 				없는 페이지 입니다.
 			</c:when>
 			<c:when test="${status == 500 }">
 				서버 오류입니다.
 			</c:when>
-			<c:otherwris>
+			<c:otherwise>
 				에러가 발생 했습니다.
-			</c:otherwris>
-		</c:chosse>
+			</c:otherwise>
+		</c:choose>
 	</c:if>
 	</h3>
 	

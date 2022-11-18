@@ -11,18 +11,22 @@
 		<result property="modDt" column="modDt"/>
 	</resultMap>
 	
-	<select id="member" parameterType="models.member.MemberDto" resultMap="memberMap">
+	<select id="member2" parameterType="models.member.MemberDto" resultMap="memberMap">
 		SELECT * FROM member WHERE memId=#{memId};
 	</select>
-	<select id="members" parameterType="models.member.MemberDto" resultMap="memberMap">
+	<select id="member" parameterType="models.member.MemberDto" resultMap="memberMap">
 		SELECT * FROM member;
+	</select>
+	
+	<select id="count" parameterType="models.member.MemberDto" resultType="int">
+		SELECT COUNT(*) FROM member WHERE memId=#{memId};
 	</select>
 	
 	<insert id="register" parameterType="models.member.MemberDto" useGeneratedKeys="true" keyProperty="memNo">
 		INSERT INTO member (memId, memPw, memNm, email, mobile)
 			VALUES (#{memId},#{memPw},#{memNm},#{email},#{mobile});
 	</insert>
-	
+		
 	<update id="update" parameterType="models.member.MemberDto">
 		UPDATE member
 			SET 

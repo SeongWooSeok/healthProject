@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AttendanceMapper">
+	<resultMap id="attendanceMap" type="models.attendance.Dto">
+		<result property="memNo" column="memNo"/>
+		<result property="memId" column="memId"/>
+		<result property="memNm" column="memNm"/>
+		<result property="attDt" column="attDt"/>
+		<result property="attDay" column="attDay"/>
+		</resultMap>
+	
+	<select id="attendance" parameterType="models.member.AttendanceDto" resultMap="attendanceMap">
+		SELECT * FROM attendance WHERE memId=#{memId};
+	</select>
+	<select id="attendance" parameterType="models.member.AttendanceDto" resultMap="attendanceMap">
+		SELECT * FROM attendance;
+	</select>
+	
+	<insert id="attendance" parameterType="models.member.AttendanceDto" useGeneratedKeys="true" keyProperty="memNo">
+		INSERT INTO attendance (memNo, memId, memNm, attDay, giftDay)
+			VALUES (#{memNo},#{memId},#{memNm},#{attDay},#{giftDay});
+	</insert>
+	
+	<update id="update" parameterType="models.member.AttendanceDto">
+		UPDATE member
+			SET 
+				memNo=#{memNo},
+				memNm=#{memNm},
+				memId=#{memId},
+				attDay=#{attDay},
+	</update>
+</mapper>
