@@ -1,56 +1,58 @@
 package models.member;
 
-import org.apache.ibatis.session.SqlSession;
+import java.util.List;
 
-import mybatis.Connection;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+import models.entity.Member;
 
 public class MemberDao {
-private static MemberDao instance = new MemberDao();
+	@Autowired
+	private EntityManager em;
 	
-	private MemberDao() {}
-	
-	/**
-	 * 회원 등록 
-	 * 
-	 * @param member
-	 * @return {MemberDto}
-	 */
-	public MemberDto register(MemberDto member) {
-		SqlSession sqlSession = Connection.getSession();
+	public MemberDto register(MemberDto params) {
+		Member entity = MemberDto.toEntity(params);
 		
-		int affectedRows = sqlSession.insert("MemberMapper.register", member);
+		em.persist(entity);
+		em.flush();
 		
-		sqlSession.commit();
-		sqlSession.close();
-		
-		if (affectedRows < 1) 
-			return null;
-		
-		return member;
+		return get(entity.getMemNo());
 	}
 	
-	/**
-	 * 회원 조회 
-	 * @param memId 아이디 
-	 * @return {MemberDto}
-	 */
+	public MemberDto get(Long memNo) {
+		
+		Member entity = em.find(Member.class, memNo);
+		
+		return MemberDto.toDto(entity);
+	}
+	
 	public MemberDto get(String memId) {
-		SqlSession sqlSession = Connection.getSession();
-		MemberDto param = new MemberDto();
-		param.setMemId(memId);
 		
-		MemberDto member = sqlSession.selectOne("MemberMapper.member", param);
-		
-		sqlSession.close();
-		
-		return member;
-	}
-	
-	public static MemberDao getInstance() {
-		if (instance ==null) {
-			instance = new MemberDao();
+		try {
+			String sql = "SELECT m FROM Member m WHERE m.memId = :memId";
+			TypedQuery<Member> tq = em.createQuery(sql, Member.class);
+			tq.setParameter("memId", memId);
+			Member entity = tq.getSingleResult();
+			
+			return MemberDto.toDto(entity);
+		} catch (Exception e) {
+			return null;
 		}
+	}
+
+	public void testMethod() {
+		List<String> memNms = em.createQuery("SELECT m.memNm FROM Member m", String.class)
+													.getResultList();
 		
-		return instance;
+		System.out.println(memNms);
+		
+		Long total = em.createQuery("SELECT COUNT(m) FROM Member m", Long.class)
+											.getSingleResult();
+		
+		System.out.println("전체 회원 수 : " + total);
 	}
 }
